@@ -1,0 +1,234 @@
+/* Joel Portfolio — restrained dark admin theme.
+   Keeps Decap CMS's familiar layout and workflows; only the visual skin changes. */
+:root {
+  color-scheme: dark;
+  --portfolio-bg: #080d13;
+  --portfolio-surface: #0d151e;
+  --portfolio-surface-raised: #111d28;
+  --portfolio-border: rgba(148, 180, 198, 0.16);
+  --portfolio-text: #e8f0f4;
+  --portfolio-muted: #91a4b2;
+  --portfolio-accent: #35d7e8;
+  --portfolio-accent-soft: rgba(53, 215, 232, 0.12);
+}
+
+html, body, #nc-root {
+  min-height: 100%;
+  background: var(--portfolio-bg) !important;
+  color: var(--portfolio-text) !important;
+}
+
+body {
+  background-image: radial-gradient(ellipse at 50% -20%, rgba(30, 104, 128, .16), transparent 48%) !important;
+  font-family: Inter, "DM Sans", system-ui, sans-serif !important;
+}
+
+/* Decap's common structural classes */
+.nc-appHeader,
+.nc-appHeader-content,
+.nc-appHeader-nav,
+.nc-sidebar,
+.nc-collectionPage,
+.nc-entryListing,
+.nc-entryEditor,
+.nc-controlPane,
+.nc-entryEditor-toolbar,
+.nc-collectionPage-sidebar,
+.nc-collectionPage-main {
+  background-color: var(--portfolio-surface) !important;
+  color: var(--portfolio-text) !important;
+  border-color: var(--portfolio-border) !important;
+}
+
+/* MUI-based Decap builds and common CMS surfaces */
+#nc-root .MuiAppBar-root,
+#nc-root .MuiToolbar-root,
+#nc-root .MuiDrawer-paper,
+#nc-root .MuiPaper-root,
+#nc-root .MuiCard-root,
+#nc-root .MuiDialog-paper,
+#nc-root .MuiPopover-paper,
+#nc-root .MuiMenu-paper {
+  background: var(--portfolio-surface) !important;
+  color: var(--portfolio-text) !important;
+  border: 1px solid var(--portfolio-border) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .22) !important;
+}
+
+#nc-root .MuiTypography-root,
+#nc-root .MuiFormLabel-root,
+#nc-root .MuiInputLabel-root,
+#nc-root .MuiTableCell-root,
+#nc-root .MuiListItemText-primary,
+#nc-root label,
+#nc-root p,
+#nc-root h1,
+#nc-root h2,
+#nc-root h3,
+#nc-root h4 {
+  color: var(--portfolio-text) !important;
+}
+
+#nc-root .MuiTypography-colorTextSecondary,
+#nc-root .MuiFormHelperText-root,
+#nc-root .MuiTableCell-secondary,
+#nc-root small {
+  color: var(--portfolio-muted) !important;
+}
+
+#nc-root .MuiButton-root,
+#nc-root button,
+#nc-root [role="button"] {
+  border-radius: 8px !important;
+  transition: background-color .15s ease, border-color .15s ease !important;
+}
+
+#nc-root .MuiButton-containedPrimary,
+#nc-root .MuiButton-contained,
+#nc-root button[type="submit"] {
+  background: var(--portfolio-accent) !important;
+  color: #061116 !important;
+  font-weight: 650 !important;
+  box-shadow: none !important;
+}
+
+#nc-root .MuiButton-outlined,
+#nc-root .MuiButton-text,
+#nc-root .MuiIconButton-root {
+  color: var(--portfolio-text) !important;
+}
+
+#nc-root .MuiButton-outlined {
+  border-color: var(--portfolio-border) !important;
+}
+
+#nc-root .MuiButton-root:hover,
+#nc-root button:hover,
+#nc-root [role="button"]:hover {
+  border-color: rgba(53, 215, 232, .48) !important;
+  background-color: var(--portfolio-accent-soft) !important;
+}
+
+#nc-root .MuiButton-containedPrimary:hover,
+#nc-root .MuiButton-contained:hover,
+#nc-root button[type="submit"]:hover {
+  background: #67e6f0 !important;
+  color: #061116 !important;
+}
+
+#nc-root .MuiOutlinedInput-root,
+#nc-root .MuiInputBase-root,
+#nc-root input,
+#nc-root textarea,
+#nc-root select,
+#nc-root [contenteditable="true"] {
+  background: #09121a !important;
+  color: var(--portfolio-text) !important;
+  border-color: var(--portfolio-border) !important;
+  caret-color: var(--portfolio-accent) !important;
+}
+
+#nc-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--portfolio-border) !important;
+}
+
+#nc-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+#nc-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--portfolio-accent) !important;
+}
+
+#nc-root .MuiTabs-indicator,
+#nc-root .Mui-selected::after {
+  background: var(--portfolio-accent) !important;
+}
+
+#nc-root .Mui-selected,
+#nc-root .MuiTab-root.Mui-selected,
+#nc-root a[aria-current="page"] {
+  color: var(--portfolio-accent) !important;
+}
+
+#nc-root .MuiDivider-root,
+#nc-root hr {
+  border-color: var(--portfolio-border) !important;
+  background-color: var(--portfolio-border) !important;
+}
+
+#nc-root .MuiChip-root {
+  background: var(--portfolio-accent-soft) !important;
+  color: var(--portfolio-accent) !important;
+  border: 1px solid var(--portfolio-border) !important;
+}
+
+#nc-root .MuiCheckbox-root,
+#nc-root .MuiRadio-root,
+#nc-root .MuiSwitch-root {
+  color: var(--portfolio-accent) !important;
+}
+
+#nc-root .MuiTableHead-root,
+#nc-root .MuiTableRow-root:hover,
+#nc-root .MuiListItemButton-root:hover {
+  background: rgba(53, 215, 232, .055) !important;
+}
+
+/* Decap's legacy Semantic UI / styled-components surfaces */
+#nc-root .ui.menu,
+#nc-root .ui.segment,
+#nc-root .ui.card,
+#nc-root .ui.modal,
+#nc-root .ui.dropdown,
+#nc-root .ui.input input,
+#nc-root .ui.form textarea,
+#nc-root .ui.form input,
+#nc-root .ui.table,
+#nc-root .nc-entryListing-card,
+#nc-root .nc-collectionPage-card {
+  background: var(--portfolio-surface) !important;
+  color: var(--portfolio-text) !important;
+  border-color: var(--portfolio-border) !important;
+}
+
+#nc-root .ui.menu .item,
+#nc-root .ui.header,
+#nc-root .ui.form .field > label,
+#nc-root .ui.table th,
+#nc-root .ui.table td {
+  color: var(--portfolio-text) !important;
+}
+
+#nc-root .ui.menu .active.item,
+#nc-root .ui.menu .item:hover,
+#nc-root .ui.selection.dropdown .menu > .item:hover {
+  color: var(--portfolio-accent) !important;
+  background: var(--portfolio-accent-soft) !important;
+}
+
+#nc-root .ui.primary.button,
+#nc-root .ui.primary.buttons .button {
+  background: var(--portfolio-accent) !important;
+  color: #061116 !important;
+  box-shadow: none !important;
+}
+
+#nc-root .ui.input input,
+#nc-root .ui.form input,
+#nc-root .ui.form textarea,
+#nc-root .ui.selection.dropdown {
+  background: #09121a !important;
+  color: var(--portfolio-text) !important;
+  border-color: var(--portfolio-border) !important;
+}
+
+/* Scrollbars */
+#nc-root * {
+  scrollbar-color: #29414d var(--portfolio-bg);
+  scrollbar-width: thin;
+}
+
+@media (max-width: 700px) {
+  #nc-root .MuiPaper-root,
+  #nc-root .ui.segment {
+    border-radius: 10px !important;
+  }
+}
