@@ -1,0 +1,14 @@
+{
+  "title": "AI Face Recognition",
+  "category": "COMPUTER VISION",
+  "description": "An academic project exploring face detection and recognition for an investigation workflow.",
+  "tags": [
+    "Python",
+    "OpenCV",
+    "AI"
+  ],
+  "featured": true,
+  "sortOrder": 2,
+  "slug": "ai-face-recognition",
+  "projectType": "AI / ML"
+}

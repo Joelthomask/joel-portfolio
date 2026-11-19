@@ -1,0 +1,14 @@
+{
+  "title": "Database Lab",
+  "category": "DATABASE EXPERIMENTS",
+  "description": "A collection of database exercises and application experiments.",
+  "tags": [
+    "SQL",
+    "MySQL",
+    "Backend"
+  ],
+  "featured": true,
+  "sortOrder": 3,
+  "slug": "database-lab",
+  "projectType": "Databases"
+}

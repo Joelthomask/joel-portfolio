@@ -1,0 +1,104 @@
+{
+  "technologies": [
+    {
+      "name": "Python",
+      "symbol": "Py",
+      "detail": "Programming language"
+    },
+    {
+      "name": "Java",
+      "symbol": "J",
+      "detail": "Programming language"
+    },
+    {
+      "name": "TypeScript",
+      "symbol": "TS",
+      "detail": "Typed JavaScript"
+    },
+    {
+      "name": "SQL",
+      "symbol": "SQL",
+      "detail": "Query language"
+    },
+    {
+      "name": "Web Fundamentals",
+      "symbol": "</>",
+      "detail": "HTML · HTML5 · CSS"
+    },
+    {
+      "name": "React",
+      "symbol": "⚛",
+      "detail": "Frontend library"
+    },
+    {
+      "name": "Flutter",
+      "symbol": "F",
+      "detail": "Cross-platform UI"
+    },
+    {
+      "name": "Tailwind CSS",
+      "symbol": "≈",
+      "detail": "Utility-first CSS"
+    },
+    {
+      "name": "Vite",
+      "symbol": "V",
+      "detail": "Frontend tooling"
+    },
+    {
+      "name": "Backend Runtime",
+      "symbol": "JS",
+      "detail": "Node.js · Express.js"
+    },
+    {
+      "name": "Django",
+      "symbol": "dj",
+      "detail": "Python framework"
+    },
+    {
+      "name": "Backend Frameworks",
+      "symbol": "{ }",
+      "detail": "Flask · FastAPI · NestJS"
+    },
+    {
+      "name": "OpenCV",
+      "symbol": "CV",
+      "detail": "Computer vision toolkit"
+    },
+    {
+      "name": "Databases",
+      "symbol": "DB",
+      "detail": "MySQL · SQLite"
+    },
+    {
+      "name": "AI & Machine Learning",
+      "symbol": "AI",
+      "detail": "Intelligent systems"
+    },
+    {
+      "name": "Computer Vision",
+      "symbol": "◉",
+      "detail": "Visual understanding"
+    },
+    {
+      "name": "AWS",
+      "symbol": "aws",
+      "detail": "Cloud services"
+    },
+    {
+      "name": "Firebase",
+      "symbol": "🔥",
+      "detail": "Application platform"
+    },
+    {
+      "name": "Git",
+      "symbol": "⑂",
+      "detail": "Version control"
+    },
+    {
+      "name": "Three.js",
+      "symbol": "◇",
+      "detail": "3D graphics"
+    }
+  ]
+}

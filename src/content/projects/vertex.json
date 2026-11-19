@@ -1,0 +1,14 @@
+{
+  "title": "Vertex",
+  "category": "PERSONAL CLOUD ECOSYSTEM",
+  "description": "A personal project exploring a unified space for files, media and everyday digital tools.",
+  "tags": [
+    "Full-stack",
+    "Cloud",
+    "Self-hosted"
+  ],
+  "featured": true,
+  "sortOrder": 1,
+  "slug": "vertex",
+  "projectType": "Web Apps"
+}
