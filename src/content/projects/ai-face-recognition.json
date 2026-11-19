@@ -10,5 +10,6 @@
   "featured": true,
   "sortOrder": 2,
   "slug": "ai-face-recognition",
-  "projectType": "AI / ML"
+  "projectType": "AI / ML",
+  "showLiveDemo": false
 }

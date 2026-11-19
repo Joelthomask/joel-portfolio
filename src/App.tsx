@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Menu, X, ArrowUpRight, Github, Linkedin, Mail, Search, LayoutGrid, List, Globe, Cpu, Monitor, Database, MoreHorizontal, ChevronDown } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Github, Linkedin, Mail, Search, LayoutGrid, List, Globe, Cpu, Monitor, Database, MoreHorizontal, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, CalendarDays, Layers, UserRound, Check } from 'lucide-react'
 import { projects, technologies, siteContent, aboutContent, contactContent } from './data/portfolio'
 import SectionLabel from './components/SectionLabel'
 import MountainExperience from './components/MountainExperience'
@@ -171,9 +171,79 @@ function MobileExperienceNotice() {
   )
 }
 
+
+function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[number]; onClose: () => void }) {
+  const gallery = (project.images?.length ? project.images : project.image ? [project.image] : []).filter(Boolean)
+  const [activeImage, setActiveImage] = useState(0)
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key === 'ArrowRight' && gallery.length > 1) setActiveImage((value) => (value + 1) % gallery.length)
+      if (event.key === 'ArrowLeft' && gallery.length > 1) setActiveImage((value) => (value - 1 + gallery.length) % gallery.length)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [onClose, gallery.length])
+
+  const hasLiveDemo = Boolean(project.showLiveDemo && project.liveDemoUrl)
+  const hasSource = Boolean(project.sourceCodeUrl)
+  const features = project.features ?? []
+
+  return (
+    <div className="project-modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+      <section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+        <button className="project-modal-close" type="button" onClick={onClose} aria-label="Close project details"><X size={20} /></button>
+        <div className="project-modal-gallery">
+          <div className="project-modal-main-image">
+            {gallery[activeImage] ? <img src={gallery[activeImage]} alt={`${project.title} screenshot ${activeImage + 1}`} /> : <div className="project-modal-image-placeholder"><Layers size={46} /><span>PROJECT PREVIEW</span></div>}
+            {gallery.length > 1 && <>
+              <button className="project-gallery-arrow previous" type="button" onClick={() => setActiveImage((value) => (value - 1 + gallery.length) % gallery.length)} aria-label="Previous image"><ChevronLeft size={20} /></button>
+              <button className="project-gallery-arrow next" type="button" onClick={() => setActiveImage((value) => (value + 1) % gallery.length)} aria-label="Next image"><ChevronRight size={20} /></button>
+            </>}
+          </div>
+          {gallery.length > 1 && <div className="project-modal-thumbnails">
+            {gallery.map((image, index) => <button type="button" key={`${image}-${index}`} className={activeImage === index ? 'active' : ''} onClick={() => setActiveImage(index)} aria-label={`Show image ${index + 1}`}><img src={image} alt="" /></button>)}
+          </div>}
+          {gallery.length > 0 && <div className="project-gallery-count">{String(activeImage + 1).padStart(2, '0')} <span>/</span> {String(gallery.length).padStart(2, '0')}</div>}
+        </div>
+        <div className="project-modal-content">
+          <div className="project-modal-kicker"><span className="project-modal-kicker-icon"><Layers size={14} /></span>{project.projectType || 'PROJECT'}</div>
+          <p className="project-modal-category">{project.category}</p>
+          <h2 id="project-modal-title">{project.title}</h2>
+          <p className="project-modal-description">{project.overview || project.description}</p>
+          {features.length > 0 && <div className="project-modal-features">
+            <h3><span><Check size={15} /></span> Key Features</h3>
+            <ul>{features.map((feature, index) => <li key={`${feature}-${index}`}><Check size={15} />{feature}</li>)}</ul>
+          </div>}
+          <div className="project-modal-tech">
+            <h3>Technology Stack</h3>
+            <div className="project-modal-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+          </div>
+          <div className="project-modal-actions">
+            {hasLiveDemo && <a className="button button-primary" href={project.liveDemoUrl} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Live Demo <ArrowUpRight size={14} /></a>}
+            {hasSource && <a className="button button-quiet" href={project.sourceCodeUrl} target="_blank" rel="noreferrer"><Github size={16} /> Source Code <ArrowUpRight size={14} /></a>}
+          </div>
+          <div className="project-modal-meta">
+            {project.date && <span><CalendarDays size={14} />{project.date}</span>}
+            {project.role && <span><UserRound size={14} />{project.role}</span>}
+            <span><Layers size={14} />{project.projectType}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
 function PortfolioHome() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null)
   const headerRef = useRef<HTMLElement>(null)
   const closeMenu = () => setMenuOpen(false)
 
@@ -265,7 +335,7 @@ function PortfolioHome() {
         </div>
         <div className="project-grid">
           {(projects.filter((project) => project.featured).length ? projects.filter((project) => project.featured) : projects).slice(0, 3).map((project, index) => (
-            <article className={`project-card project-${index + 1}`} key={project.slug}>
+            <article className={`project-card project-${index + 1}`} key={project.slug} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
               <div className={`project-art art-${index + 1}`}>
                 {project.image && <img className="project-art-image" src={project.image} alt={`${project.title} preview`} loading="lazy" decoding="async" />}
                 <span className="art-index">0{index + 1}</span>
@@ -273,7 +343,7 @@ function PortfolioHome() {
               </div>
               <div className="project-info">
                 <div><p className="project-category">{project.category}</p><h3>{project.title}</h3><p>{project.description}</p></div>
-                <a href="#contact" className="round-link" aria-label={`Discuss ${project.title}`}><ArrowUpRight size={19} /></a>
+                <span className="round-link" aria-hidden="true"><ArrowUpRight size={19} /></span>
               </div>
               <div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
             </article>
@@ -327,6 +397,7 @@ function PortfolioHome() {
       </section>
 
       <footer className="site-footer section-shell"><span>© {new Date().getFullYear()} Joel. Built with curiosity.</span><span>DESIGNED TO FEEL DIFFERENT.</span></footer>
+      {selectedProject && <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </main>
   )
 }
@@ -341,6 +412,7 @@ function ProjectLabPage() {
   )
   const [sort, setSort] = useState('Newest')
   const [view, setView] = useState<'grid' | 'list'>('grid')
+  const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null)
 
   const categorizedProjects = projects.map((project, index) => ({
     ...project,
@@ -406,12 +478,12 @@ function ProjectLabPage() {
 
         <div className={`lab-project-grid ${view === 'list' ? 'list-view' : ''}`}>
           {filtered.map((project, index) => (
-            <article className={`lab-project-card project-${(index % 3) + 1}`} key={project.slug}>
+            <article className={`lab-project-card project-${(index % 3) + 1}`} key={project.slug} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
               <div className={`lab-project-art art-${(index % 3) + 1}`}>
                 {project.image && <img className="project-art-image" src={project.image} alt={`${project.title} preview`} loading="lazy" decoding="async" />}
                 <span className="art-index">{project.number}</span>
                 <div className="art-shape" />
-                <a href="/#contact" className="lab-card-open" aria-label={`Ask about ${project.title}`}><ArrowUpRight size={17} /></a>
+                <span className="lab-card-open" aria-hidden="true"><ArrowUpRight size={17} /></span>
               </div>
               <div className="lab-project-info">
                 <div><h2>{project.title}</h2><p>{project.description}</p></div>
@@ -427,6 +499,7 @@ function ProjectLabPage() {
           <a href="/#work">← BACK TO PORTFOLIO</a>
         </div>
       </section>
+      {selectedProject && <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </main>
   )
 }

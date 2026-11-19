@@ -48,7 +48,23 @@ collections:
         name: tags
         widget: list
         field: { label: Tag, name: tag, widget: string }
-      - { label: Project Image, name: image, widget: image, required: false }
+      - { label: Project Card Image, name: image, widget: image, required: false }
+      - label: Project Gallery Images
+        name: images
+        widget: list
+        required: false
+        field: { label: Screenshot, name: image, widget: image }
+      - { label: Detailed Overview, name: overview, widget: text, required: false }
+      - label: Key Features
+        name: features
+        widget: list
+        required: false
+        field: { label: Feature, name: feature, widget: string }
+      - { label: Show Live Demo Button, name: showLiveDemo, widget: boolean, default: false, required: false }
+      - { label: Live Demo URL, name: liveDemoUrl, widget: string, required: false }
+      - { label: Source Code URL, name: sourceCodeUrl, widget: string, required: false }
+      - { label: Project Date, name: date, widget: string, required: false }
+      - { label: Your Role, name: role, widget: string, required: false }
       - { label: Show in Featured Work, name: featured, widget: boolean, default: true }
       - { label: Display Order, name: sortOrder, widget: number, value_type: int, default: 99, required: true }
 

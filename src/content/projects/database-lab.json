@@ -10,5 +10,6 @@
   "featured": true,
   "sortOrder": 3,
   "slug": "database-lab",
-  "projectType": "Databases"
+  "projectType": "Databases",
+  "showLiveDemo": false
 }

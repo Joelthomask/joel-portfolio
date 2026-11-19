@@ -11,6 +11,14 @@ export type Project = {
   featured?: boolean
   sortOrder?: number
   image?: string
+  images?: string[]
+  overview?: string
+  features?: string[]
+  showLiveDemo?: boolean
+  liveDemoUrl?: string
+  sourceCodeUrl?: string
+  date?: string
+  role?: string
   slug: string
   projectType: 'Web Apps' | 'AI / ML' | 'Desktop Apps' | 'Databases' | 'Others'
 }

@@ -10,5 +10,6 @@
   "featured": true,
   "sortOrder": 1,
   "slug": "vertex",
-  "projectType": "Web Apps"
+  "projectType": "Web Apps",
+  "showLiveDemo": false
 }
