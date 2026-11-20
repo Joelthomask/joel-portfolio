@@ -240,10 +240,62 @@ function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[n
   )
 }
 
+function EmailContactModal({ email, onClose }: { email: string; onClose: () => void }) {
+  const [copied, setCopied] = useState(false)
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(email)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2200)
+    } catch {
+      const field = document.createElement('textarea')
+      field.value = email
+      field.style.position = 'fixed'
+      field.style.opacity = '0'
+      document.body.appendChild(field)
+      field.select()
+      const success = document.execCommand('copy')
+      field.remove()
+      setCopied(success)
+    }
+  }
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div className="email-modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+      <section className="email-modal" role="dialog" aria-modal="true" aria-labelledby="email-modal-title">
+        <button className="email-modal-close" type="button" onClick={onClose} aria-label="Close email options"><X size={18} /></button>
+        <span className="email-modal-icon"><Mail size={21} /></span>
+        <p className="email-modal-eyebrow">GET IN TOUCH</p>
+        <h2 id="email-modal-title">Let's talk.</h2>
+        <p className="email-modal-copy">Reach me directly by email. Choose how you'd like to continue.</p>
+        <div className="email-address">{email}</div>
+        <div className="email-modal-actions">
+          <button className="button button-primary" type="button" onClick={copyEmail}><Mail size={15} /> {copied ? 'Copied!' : 'Copy email'}</button>
+          <a className="button button-quiet" href={gmailUrl} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Open Gmail</a>
+          <a className="button button-quiet" href={`mailto:${email}`}><ArrowUpRight size={15} /> Open email app</a>
+        </div>
+        <p className="email-modal-note">I usually reply as soon as I can.</p>
+      </section>
+    </div>
+  )
+}
+
 function PortfolioHome() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null)
+  const [emailOpen, setEmailOpen] = useState(false)
   const headerRef = useRef<HTMLElement>(null)
   const closeMenu = () => setMenuOpen(false)
 
@@ -305,7 +357,7 @@ function PortfolioHome() {
           <div className="social-links" aria-label="Social links">
             <a href={siteContent.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a>
             <a href={siteContent.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a>
-            <a href={`mailto:${contactContent.email}`} aria-label="Email Joel"><Mail size={17} /></a>
+            <button type="button" className="social-email-button" onClick={() => setEmailOpen(true)} aria-label="Show email contact options"><Mail size={17} /></button>
           </div>
         </div>
         <div className="hero-visual" aria-hidden="true"><MountainExperience /></div>
@@ -397,6 +449,7 @@ function PortfolioHome() {
       </section>
 
       <footer className="site-footer section-shell"><span>© {new Date().getFullYear()} Joel. Built with curiosity.</span><span>DESIGNED TO FEEL DIFFERENT.</span></footer>
+      {emailOpen && <EmailContactModal email={contactContent.email} onClose={() => setEmailOpen(false)} />}
       {selectedProject && <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </main>
   )
@@ -443,7 +496,6 @@ function ProjectLabPage() {
             <h1>Project <em>Lab</em></h1>
             <p>A complete collection of my projects, experiments and applications.<br className="desktop-break" /> Browse, filter and explore based on your interest.</p>
           </div>
-          <div className="lab-mountain" aria-hidden="true" />
         </div>
 
         <div className="lab-tools">

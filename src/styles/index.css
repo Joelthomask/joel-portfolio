@@ -789,7 +789,6 @@ main { position: relative; }
 .lab-hero h1 { margin: 0 0 12px; font: 600 clamp(38px, 5vw, 58px)/1 var(--font-display); letter-spacing: -.06em; }
 .lab-hero h1 em { color: var(--violet); font-style: normal; }
 .lab-hero-copy > p:last-child { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0; }
-.lab-mountain { position: absolute; right: -5%; top: -100px; width: 65%; height: 300px; opacity: .64; background: linear-gradient(90deg, var(--bg) 0%, transparent 35%), linear-gradient(0deg, var(--bg), transparent 60%), url("/assets/Mountain3.webp") center 43% / cover no-repeat; mask-image: linear-gradient(90deg, transparent, #000 34%, #000); pointer-events: none; }
 .lab-tools { display: flex; align-items: center; gap: 18px; margin: 2px 0 20px; }
 .lab-search { min-width: 0; flex: 1; height: 44px; border: 1px solid rgba(137, 164, 197, .25); border-radius: 999px; background: linear-gradient(110deg, rgba(23, 39, 56, .78), rgba(8, 14, 23, .9)); display: flex; align-items: center; gap: 11px; padding: 0 15px; color: var(--muted); box-shadow: inset 0 1px 8px rgba(0,0,0,.25), 0 5px 22px rgba(0,0,0,.12); }
 .lab-search input { flex: 1; min-width: 0; border: 0; outline: 0; color: var(--text); background: transparent; font: inherit; font-size: 12px; }
@@ -852,7 +851,6 @@ main { position: relative; }
   .lab-header { height: 66px; }
   .lab-header .resume-link { display: none; }
   .lab-hero { min-height: 165px; padding-left: 0; }
-  .lab-mountain { width: 85%; right: -25%; opacity: .45; }
   .lab-tools { flex-direction: column; align-items: stretch; }
   .lab-tool-right { justify-content: space-between; }
   .lab-project-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -1525,3 +1523,114 @@ main { overflow-x: clip; } /* tiles sliding in from the right must not create a 
 .lab-project-card[role="button"] .lab-project-info,
 .lab-project-card[role="button"] .lab-project-info * { cursor: pointer; }
 .lab-card-open { padding: 0; }
+
+
+/* Email contact popover */
+.social-email-button {
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  transition: color .2s ease, transform .2s ease;
+}
+.social-email-button:hover { color: var(--cyan); transform: translateY(-3px); }
+.email-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(2, 5, 10, .78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.email-modal {
+  width: min(100%, 460px);
+  position: relative;
+  padding: 34px;
+  border: 1px solid rgba(137, 164, 197, .25);
+  border-radius: 22px;
+  background: linear-gradient(145deg, #121b29, #080d14 78%);
+  box-shadow: 0 28px 90px rgba(0,0,0,.55), inset 0 1px rgba(255,255,255,.04);
+  color: #f1f3f7;
+}
+.email-modal-close {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(174,190,214,.18);
+  border-radius: 50%;
+  color: #b9c6d9;
+  background: transparent;
+}
+.email-modal-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,213,255,.3);
+  border-radius: 14px;
+  color: var(--cyan);
+  background: rgba(0,213,255,.08);
+}
+.email-modal-eyebrow {
+  margin: 22px 0 8px;
+  color: var(--cyan);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2em;
+}
+.email-modal h2 {
+  margin: 0;
+  font: 600 38px/1 var(--font-display);
+  letter-spacing: -.055em;
+}
+.email-modal-copy {
+  margin: 13px 0 20px;
+  color: #aab5c5;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.email-address {
+  overflow-wrap: anywhere;
+  padding: 14px 15px;
+  border: 1px solid rgba(137,164,197,.2);
+  border-radius: 11px;
+  color: #e9f4ff;
+  background: rgba(5,10,17,.65);
+  font-size: 14px;
+}
+.email-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 16px;
+}
+.email-modal-actions .button {
+  justify-content: center;
+  padding: 12px 13px;
+  white-space: nowrap;
+}
+.email-modal-actions .button:first-child { grid-column: 1 / -1; }
+.email-modal-note {
+  margin: 17px 0 0;
+  color: #77869a;
+  font-size: 11px;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .email-modal { padding: 27px 22px; }
+  .email-modal-actions { grid-template-columns: 1fr; }
+  .email-modal-actions .button:first-child { grid-column: auto; }
+}
+
+/* Project Lab intentionally uses a clean, typography-led header without hero artwork. */
+.lab-hero { min-height: 185px; }
