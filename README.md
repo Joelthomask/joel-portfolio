@@ -14,7 +14,7 @@ React, TypeScript, Vite, CSS, Three.js and Lucide React.
 
 ## Run locally
 
-Requires Node.js 20.19 or newer.
+Requires Node.js 22.x.
 
 ```bash
 npm install
