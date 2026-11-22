@@ -1,15 +1,23 @@
 {
   "title": "Vertex",
+  "slug": "vertex",
   "category": "PERSONAL CLOUD ECOSYSTEM",
+  "projectType": "Web Apps",
   "description": "A personal project exploring a unified space for files, media and everyday digital tools.",
+  "overview": "",
   "tags": [
     "Full-stack",
     "Cloud",
     "Self-hosted"
   ],
-  "featured": true,
+  "features": [],
+  "image": "",
+  "images": [],
+  "liveDemoUrl": "https://github.com/Joelthomask",
+  "sourceCodeUrl": "",
+  "date": "",
+  "role": "",
   "sortOrder": 1,
-  "slug": "vertex",
-  "projectType": "Web Apps",
-  "showLiveDemo": false
+  "featured": true,
+  "showLiveDemo": true
 }
