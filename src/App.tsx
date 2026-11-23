@@ -167,6 +167,10 @@ function MobileExperienceNotice() {
           Continue on mobile <ArrowUpRight size={15} />
         </button>
       </section>
+      {expandedImage && gallery[activeImage] && <div className="project-image-lightbox" role="dialog" aria-modal="true" aria-label="Project image" onClick={() => setExpandedImage(false)}>
+        <button type="button" className="project-image-lightbox-close" onClick={() => setExpandedImage(false)} aria-label="Close image"><X size={22} /></button>
+        <img src={gallery[activeImage]} alt={`${project.title} full-size screenshot ${activeImage + 1}`} onClick={(event) => event.stopPropagation()} />
+      </div>}
     </div>
   )
 }
@@ -237,10 +241,6 @@ function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[n
           </div>
         </div>
       </section>
-      {expandedImage && gallery[activeImage] && <div className="project-image-lightbox" role="dialog" aria-modal="true" aria-label="Project image" onClick={() => setExpandedImage(false)}>
-        <button type="button" className="project-image-lightbox-close" onClick={() => setExpandedImage(false)} aria-label="Close image"><X size={22} /></button>
-        <img src={gallery[activeImage]} alt={`${project.title} full-size screenshot ${activeImage + 1}`} onClick={(event) => event.stopPropagation()} />
-      </div>}
     </div>
   )
 }

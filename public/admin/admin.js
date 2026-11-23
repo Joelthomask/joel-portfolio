@@ -1,4 +1,48 @@
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];const S={user:null,data:null,page:'overview',dirty:false,deletedProjects:[],deletedMediaPaths:[],pendingUploads:[]};const nav=[['overview','layout-dashboard','Overview'],['projects','folder-kanban','Projects'],['home','house','Home / Hero'],['about','user-round','About'],['toolkit','wrench','Toolkit'],['contact','mail','Contact'],['media','images','Media Library'],['settings','settings','Settings']];const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const glyphs={'layout-dashboard':'▦','folder-kanban':'▤','house':'⌂','user-round':'◉','wrench':'⌁','mail':'✉','images':'▧','settings':'⚙','github':'◉','app-window':'▣','plus':'+','arrow-up-right':'↗','pencil':'✎','trash-2':'×','save':'↓','git-pull-request':'⑂','upload':'↑','external-link':'↗','search':'⌕','image':'▧','log-out':'⇥','copy':'▣','star':'☆','code-2':'‹›'};const ic=n=>`<span class="icon-glyph" aria-hidden="true">${glyphs[n]||'·'}</span>`;function icons(){}function toast(t){let e=document.createElement('div');e.className='toast';e.textContent=t;document.body.append(e);setTimeout(()=>e.remove(),3000)}const LOCAL_DEMO = ['localhost','127.0.0.1'].includes(location.hostname);
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];const S={user:null,data:null,page:'overview',dirty:false,deletedProjects:[],deletedMediaPaths:[],pendingUploads:[]};const nav=[['overview','layout-dashboard','Overview'],['projects','folder-kanban','Projects'],['home','house','Home / Hero'],['about','user-round','About'],['toolkit','wrench','Toolkit'],['contact','mail','Contact'],['media','images','Media Library'],['settings','settings','Settings']];const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const glyphs={'layout-dashboard':'▦','folder-kanban':'▤','house':'⌂','user-round':'◉','wrench':'⌁','mail':'✉','images':'▧','settings':'⚙','github':'◉','app-window':'▣','plus':'+','arrow-up-right':'↗','pencil':'✎','trash-2':'×','save':'↓','git-pull-request':'⑂','upload':'↑','external-link':'↗','search':'⌕','image':'▧','log-out':'⇥','copy':'▣','star':'☆','code-2':'‹›'};const ic=n=>`<span class="icon-glyph" aria-hidden="true">${glyphs[n]||'·'}</span>`;function icons(){}
+let progressState=null;
+function progressModal(title,steps){
+  progressState={title,steps:steps.map((label,i)=>({label,status:i===0?'active':'waiting'})),active:0};
+  let el=document.getElementById('operation-progress');
+  if(!el){el=document.createElement('div');el.id='operation-progress';el.className='operation-progress-backdrop';document.body.append(el);}
+  drawProgress();
+}
+function drawProgress(){
+  const s=progressState;if(!s)return;
+  const done=s.steps.filter(x=>x.status==='done').length;
+  const pct=Math.round(done/s.steps.length*100);
+  const active=s.steps.find(x=>x.status==='active');
+  const el=document.getElementById('operation-progress');
+  el.innerHTML=`<div class="operation-progress-card" role="dialog" aria-modal="true" aria-labelledby="operation-progress-title">
+    <div class="operation-progress-top"><span class="eyebrow">PORTFOLIO ADMIN</span><span class="operation-live"><i></i> WORKING</span></div>
+    <h2 id="operation-progress-title">${esc(s.title)}</h2>
+    <div class="operation-progress-percent">${pct}%</div>
+    <div class="operation-progress-track"><span style="width:${pct}%"></span></div>
+    <p class="operation-current">${active?esc(active.label):'Finishing up...'}</p>
+    <div class="operation-steps">${s.steps.map((x,i)=>`<div class="operation-step ${x.status}"><span class="operation-step-icon">${x.status==='done'?'✓':x.status==='active'?'<i></i>':String(i+1).padStart(2,'0')}</span><span>${esc(x.label)}</span><small>${x.status==='done'?'Completed':x.status==='active'?'In progress':'Waiting'}</small></div>`).join('')}</div>
+    <p class="operation-note">Progress reflects completed stages. GitHub may take variable time while processing the request.</p>
+  </div>`;
+}
+function progressDone(){
+  if(!progressState)return;
+  progressState.steps.forEach(x=>x.status='done');drawProgress();
+  const el=document.getElementById('operation-progress');
+  if(el){const card=el.querySelector('.operation-progress-card');card.insertAdjacentHTML('beforeend','<div class="operation-result success">✓ Operation completed successfully</div><button class="btn primary operation-close" type="button">Done</button>');el.querySelector('.operation-close').onclick=()=>{el.remove();progressState=null;};}
+}
+function progressFail(error){
+  if(!progressState)return;
+  const active=progressState.steps.find(x=>x.status==='active');
+  if(active)active.status='failed';
+  drawProgress();
+  const el=document.getElementById('operation-progress');
+  if(el){const card=el.querySelector('.operation-progress-card');card.insertAdjacentHTML('beforeend',`<div class="operation-result failed">Operation failed</div><pre class="operation-error">${esc(error?.message||String(error))}</pre><button class="btn operation-close" type="button">Close</button>`);el.querySelector('.operation-close').onclick=()=>{el.remove();progressState=null;};}
+}
+function progressStep(index){
+  if(!progressState)return;
+  progressState.steps.forEach((x,i)=>x.status=i<index?'done':i===index?'active':'waiting');
+  progressState.active=index;drawProgress();
+}
+
+function toast(t){let e=document.createElement('div');e.className='toast';e.textContent=t;document.body.append(e);setTimeout(()=>e.remove(),3000)}const LOCAL_DEMO = ['localhost','127.0.0.1'].includes(location.hostname);
 let demoContent = null;
 async function loadDemoContent(){
   if(demoContent) return demoContent;
@@ -85,4 +129,50 @@ async function req(url,opt={}){
 function delProject(slug){if(!confirm(`Delete ${slug}?`))return;S.data.projects=S.data.projects.filter(x=>x.slug!==slug);S.deletedProjects.push(slug);S.dirty=true;render()}function editTech(i){let t=i===undefined?{name:'',symbol:'',detail:''}:S.data.toolkit.technologies[i];let d=modal(i===undefined?'Add technology':'Edit technology',`<form id="tf">${f('Name','name',t.name)}${f('Symbol','symbol',t.symbol)}${f('Description','detail',t.detail)}<button class="btn primary">Save item</button></form>`,e=>$('#tf',e).onsubmit=x=>{x.preventDefault();let v=Object.fromEntries(new FormData(x.target));if(i===undefined)S.data.toolkit.technologies.push(v);else S.data.toolkit.technologies[i]=v;S.dirty=true;d.remove();render()})}async function upload(e){const files=[...(e.target.files||[])];let total=S.pendingUploads.reduce((n,x)=>n+x.bytes,0);for(const file of files){if(!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)){toast(`${file.name}: use PNG, JPEG, WebP or GIF.`);continue}if(file.size>2.8*1024*1024||total+file.size>2.8*1024*1024){toast(`${file.name}: keep the combined images in this save under 2.8 MB.`);continue}try{const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result));r.onerror=rej;r.readAsDataURL(file)});S.pendingUploads.push({name:file.name,type:file.type,base64:dataUrl.split(',')[1],preview:dataUrl,bytes:file.size});total+=file.size;S.dirty=true;}catch(err){toast(`Could not read ${file.name}: ${err.message}`)}}render();if(S.pendingUploads.length)toast('Images staged. Click Save draft to save them together with your content.');e.target.value=''}async function fileToUpload(file,replacePath=null){if(!file)return null;if(!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)){toast('Use PNG, JPEG, WebP or GIF images.');return null}const total=S.pendingUploads.reduce((n,x)=>n+x.bytes,0);if(file.size>2.8*1024*1024||total+file.size>2.8*1024*1024){toast('Keep combined image uploads under 2.8 MB per Save draft.');return null}const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result));r.onerror=rej;r.readAsDataURL(file)});return {name:file.name,type:file.type,base64:dataUrl.split(',')[1],preview:dataUrl,bytes:file.size,replacePath}}
 async function stageReplacement(file,path){try{const item=await fileToUpload(file,path);if(!item)return;S.pendingUploads.push(item);S.dirty=true;toast('Replacement staged. Save draft to apply it.');render()}catch(e){toast(`Could not read image: ${e.message}`)}}
 async function stagePortrait(file){try{const item=await fileToUpload(file);if(!item)return;S.pendingUploads.push(item);S.dirty=true;const pendingUrl=item.preview;item.isPortrait=true;toast('New About photo selected. Save draft to upload and apply it.');render();const preview=$('#portrait-preview');if(preview)preview.src=pendingUrl}catch(e){toast(`Could not read image: ${e.message}`)}}
-async function saveDraft(showToast=true){if(!S.dirty&&!S.pendingUploads.length&&!S.deletedProjects.length&&!S.deletedMediaPaths.length){if(showToast)toast(S.data.hasDraft?'Your latest changes are already saved.':'There are no changes to save.');return true}const button=$('#save-global');if(button)button.disabled=true;try{const files={'src/content/site.json':S.data.site,'src/content/about.json':S.data.about,'src/content/contact.json':S.data.contact,'src/content/toolkit.json':S.data.toolkit};S.data.projects.forEach(p=>files[`src/content/projects/${p.slug}.json`]=p);const uploads=S.pendingUploads.map(({name,type,base64,replacePath,isPortrait,projectSlug,projectImage,imageOrder})=>({name,type,base64,...(replacePath?{replacePath}:{}),...(isPortrait?{isPortrait:true}:{}),...(projectImage?{projectSlug,projectImage:true,imageOrder}: {})}));const r=await req('/api/admin/draft',{method:'POST',body:JSON.stringify({files,uploads,deletePaths:[...S.deletedProjects.map(slug=>`src/content/projects/${slug}.json`),...S.deletedMediaPaths]})});S.data.draftBranch=r.branch;S.data.hasDraft=true;S.dirty=false;S.deletedProjects=[];S.pendingUploads=[];S.deletedMediaPaths=[];S.data=await req('/api/admin/content');if($('#draft-status'))$('#draft-status').innerHTML='<i class="dot"></i> Draft saved';if(showToast)toast('Draft saved in one GitHub commit. Continue editing or publish when ready.');return true}catch(e){toast(`Could not save draft: ${e.message}`);return false}finally{const b=$('#save-global');if(b)b.disabled=false}}async function publishDraft(){if(!confirm('Publish the saved portfolio changes to your live website?'))return;const button=$('#publish-global');if(button)button.disabled=true;try{if(S.dirty||!S.data.hasDraft){const saved=await saveDraft(false);if(!saved)return;}const result=await req('/api/admin/publish',{method:'POST',body:'{}'});toast(result.message||'Portfolio published. Vercel deployment is starting.');S.data=await req('/api/admin/content');S.dirty=false;S.deletedProjects=[];render()}catch(e){toast(`Publish failed: ${e.message}`)}finally{const b=$('#publish-global');if(b)b.disabled=false}}async function start(){try{let me=await req('/api/admin/me');if(!me.authenticated)return login();S.user=me.user;S.data=await req('/api/admin/content');S.page='overview';render()}catch(e){login(e.message)}}start();
+async function saveDraft(showToast=true,forPublish=false){
+ if(!S.dirty&&!S.pendingUploads.length&&!S.deletedProjects.length&&!S.deletedMediaPaths.length){
+  if(showToast)toast(S.data.hasDraft?'Your latest changes are already saved.':'There are no changes to save.');
+  return true;
+ }
+ const steps=['Preparing content and project files','Preparing image uploads','Sending changes to GitHub','GitHub processing draft commit','Refreshing saved draft status'];
+ progressModal(forPublish?'Preparing publication':'Saving draft',steps);
+ const button=$('#save-global');if(button)button.disabled=true;
+ try{
+  progressStep(0);
+  const files={'src/content/site.json':S.data.site,'src/content/about.json':S.data.about,'src/content/contact.json':S.data.contact,'src/content/toolkit.json':S.data.toolkit};
+  S.data.projects.forEach(p=>files[`src/content/projects/${p.slug}.json`]=p);
+  progressStep(1);
+  const uploads=S.pendingUploads.map(({name,type,base64,replacePath,isPortrait,projectSlug,projectImage,imageOrder})=>({name,type,base64,...(replacePath?{replacePath}:{}),...(isPortrait?{isPortrait:true}:{}),...(projectImage?{projectSlug,projectImage:true,imageOrder}: {})}));
+  progressStep(2);
+  progressStep(3);
+  const r=await req('/api/admin/draft',{method:'POST',body:JSON.stringify({files,uploads,deletePaths:[...S.deletedProjects.map(slug=>`src/content/projects/${slug}.json`),...S.deletedMediaPaths]})});
+  S.data.draftBranch=r.branch;S.data.hasDraft=true;S.dirty=false;S.deletedProjects=[];S.pendingUploads=[];S.deletedMediaPaths=[];
+  progressStep(4);
+  S.data=await req('/api/admin/content');
+  if($('#draft-status'))$('#draft-status').innerHTML='<i class="dot"></i> Draft saved';
+  if(!forPublish)progressDone();
+  if(showToast)toast('Draft saved in one GitHub commit. Continue editing or publish when ready.');
+  return true;
+ }catch(e){progressFail(e);if(showToast)toast(`Could not save draft: ${e.message}`);return false}
+ finally{const b=$('#save-global');if(b)b.disabled=false}
+}
+async function publishDraft(){
+ if(!confirm('Publish the saved portfolio changes to your live website?'))return;
+ const button=$('#publish-global');if(button)button.disabled=true;
+ const needsSave=S.dirty||!S.data.hasDraft;
+ if(!needsSave)progressModal('Publishing portfolio',['Validating saved draft','Merging changes into GitHub main','Triggering Vercel deployment','Refreshing publication status']);
+ try{
+  if(needsSave){const saved=await saveDraft(false,true);if(!saved)return;}
+  progressModal('Publishing portfolio',['Validating saved draft','Merging changes into GitHub main','Triggering Vercel deployment','Refreshing publication status']);
+  progressStep(0);
+  progressStep(1);
+  const result=await req('/api/admin/publish',{method:'POST',body:'{}'});
+  progressStep(2);
+  progressStep(3);
+  S.data=await req('/api/admin/content');S.dirty=false;S.deletedProjects=[];render();
+  progressDone();
+  toast(result.message||'Portfolio changes merged. Vercel deployment may still be building.');
+ }catch(e){progressFail(e);toast(`Publish failed: ${e.message}`)}
+ finally{const b=$('#publish-global');if(b)b.disabled=false}
+}
+async function start(){try{let me=await req('/api/admin/me');if(!me.authenticated)return login();S.user=me.user;S.data=await req('/api/admin/content');S.page='overview';render()}catch(e){login(e.message)}}start();
