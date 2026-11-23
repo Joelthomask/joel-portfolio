@@ -11,13 +11,15 @@
     "Self-hosted"
   ],
   "features": [],
-  "image": "",
-  "images": [],
   "liveDemoUrl": "",
   "sourceCodeUrl": "",
   "date": "",
   "role": "",
   "sortOrder": 1,
   "featured": true,
-  "showLiveDemo": false
+  "showLiveDemo": false,
+  "images": [
+    "/uploads/1795448626334-e5aacdda-screenshot-749-.png"
+  ],
+  "image": "/uploads/1795448626334-e5aacdda-screenshot-749-.png"
 }
