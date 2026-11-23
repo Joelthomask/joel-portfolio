@@ -18,9 +18,12 @@ export default async function handler(req, res) {
       method: 'POST',
       body: JSON.stringify({ base, head, commit_message: 'Publish portfolio content from Portfolio Admin' }),
     });
-    try { await gh(current.access_token, `/repos/${owner}/${repo}/git/refs/heads/${head}`, { method: 'DELETE' }); }
-    catch (error) { console.warn('[portfolio-admin:publish] Published but could not remove draft branch:', error.message); }
-    return json(res, 200, { published: true, commit: merged.sha, message: 'Your portfolio content has been published. Vercel will deploy the updated main branch.' });
+    // Keep one persistent draft branch, reset to the newly published main commit.
+    // The next Save Draft starts from the latest published state instead of creating another branch.
+    await gh(current.access_token, `/repos/${owner}/${repo}/git/refs/heads/${head}`, {
+      method: 'PATCH', body: JSON.stringify({ sha: merged.sha, force: true }),
+    });
+    return json(res, 200, { published: true, commit: merged.sha, branch: head, message: 'Your portfolio content has been published. The persistent draft branch is ready for the next edit. Vercel will deploy the updated main branch.' });
   } catch (error) {
     console.error('[portfolio-admin:publish]', error?.status || 500, error?.message || 'Unknown publish error');
     const detail = error.status === 409 || error.status === 422
