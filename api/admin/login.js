@@ -1,0 +1,3 @@
+import crypto from 'node:crypto';
+import {cookie} from '../../lib/admin.js';
+export default async function handler(req,res){try{const id=process.env.GITHUB_CLIENT_ID;if(!id)throw new Error('Missing GITHUB_CLIENT_ID in Vercel environment variables.');const state=crypto.randomBytes(24).toString('hex');res.setHeader('Set-Cookie',cookie('portfolio_admin_oauth_state',state,{maxAge:600}));const redirect=`https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(id)}&redirect_uri=${encodeURIComponent(`${process.env.APP_URL||`https://${req.headers.host}`}/api/admin/callback`)}&scope=${encodeURIComponent('public_repo read:user')}&state=${state}`;res.redirect(302,redirect);}catch(e){res.status(500).send(e.message)}}
