@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import { Menu, X, ArrowUpRight, Github, Linkedin, Mail, Search, LayoutGrid, List, Globe, Cpu, Monitor, Database, MoreHorizontal, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, CalendarDays, Layers, UserRound, Check } from 'lucide-react'
 import { projects, technologies, siteContent, aboutContent, contactContent } from './data/portfolio'
 import SectionLabel from './components/SectionLabel'
@@ -171,6 +172,61 @@ function MobileExperienceNotice() {
   )
 }
 
+
+function ProjectScrollArea({ className, label, children }: { className: string; label: string; children: ReactNode }) {
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const [hasMore, setHasMore] = useState(false)
+  const [canScrollUp, setCanScrollUp] = useState(false)
+
+  useEffect(() => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+    const update = () => {
+      setHasMore(viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop > 3)
+      setCanScrollUp(viewport.scrollTop > 3)
+    }
+    update()
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null
+    observer?.observe(viewport)
+    if (viewport.firstElementChild) observer?.observe(viewport.firstElementChild)
+    window.addEventListener('resize', update)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', update)
+    }
+  }, [children])
+
+  const scroll = () => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+    viewport.scrollBy({ top: Math.max(120, viewport.clientHeight * 0.72), behavior: 'smooth' })
+  }
+
+  return (
+    <div className={`project-scroll-area ${className}`}>
+      <div
+        ref={viewportRef}
+        className="project-scroll-viewport"
+        role="region"
+        aria-label={label}
+        tabIndex={0}
+        onScroll={(event) => {
+          const el = event.currentTarget
+          setHasMore(el.scrollHeight - el.clientHeight - el.scrollTop > 3)
+          setCanScrollUp(el.scrollTop > 3)
+        }}
+      >
+        {children}
+      </div>
+      {hasMore && <button type="button" className="project-scroll-cue" onClick={scroll} aria-label={`Scroll down ${label}`}>
+        <ChevronDown size={17} />
+      </button>}
+      {canScrollUp && <button type="button" className="project-scroll-cue up" onClick={() => viewportRef.current?.scrollTo({ top: 0, behavior: 'smooth' })} aria-label={`Scroll to top of ${label}`}>
+        <ChevronDown size={17} />
+      </button>}
+    </div>
+  )
+}
 
 function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[number]; onClose: () => void }) {
   const gallery = (project.images?.length ? project.images : project.image ? [project.image] : []).filter(Boolean)
