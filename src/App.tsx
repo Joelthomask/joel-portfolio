@@ -457,7 +457,7 @@ function PortfolioHome() {
         </div>
         <div className="project-grid">
           {(projects.filter((project) => project.featured).length ? projects.filter((project) => project.featured) : projects).slice(0, 3).map((project, index) => (
-            <article className={`project-card project-${(index % 5) + 1}`} key={project.slug} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
+            <article className={`project-card project-${(index % 5) + 1}`} key={project.id} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
               <div className={`project-art art-${(index % 5) + 1}`}>
                 <div className="art-shape" />
               </div>
@@ -598,7 +598,7 @@ function ProjectLabPage() {
 
         <div className={`lab-project-grid ${view === 'list' ? 'list-view' : ''}`}>
           {filtered.map((project, index) => (
-            <article className={`lab-project-card project-${(index % 3) + 1}`} key={project.slug} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
+            <article className={`lab-project-card project-${(index % 3) + 1}`} key={project.id} role="button" tabIndex={0} onClick={() => setSelectedProject(project)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setSelectedProject(project) } }} aria-label={`View details for ${project.title}`}>
               <div className={`lab-project-art art-${(index % 5) + 1}`}>
                 <div className="art-shape" />
                 <span className="lab-card-open" aria-hidden="true"><ArrowUpRight size={17} /></span>

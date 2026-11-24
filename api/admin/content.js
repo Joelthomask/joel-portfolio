@@ -16,10 +16,11 @@ export default async function handler(req, res) {
       file('src/content/site.json'), file('src/content/about.json'), file('src/content/contact.json'), file('src/content/toolkit.json'),
       gh(current.access_token, `/repos/${owner}/${repo}/contents/src/content/projects?ref=${branch}`),
     ]);
-    const projects = await Promise.all(dir.filter(item => item.name.endsWith('.json')).map(async item => ({
-      ...JSON.parse(Buffer.from((await gh(current.access_token, `/repos/${owner}/${repo}/contents/${item.path}?ref=${branch}`)).content, 'base64').toString('utf8')),
-      slug: item.name.replace(/\.json$/, ''),
-    })));
+    const projects = await Promise.all(dir.filter(item => item.name.endsWith('.json')).map(async item => {
+      const project = JSON.parse(Buffer.from((await gh(current.access_token, `/repos/${owner}/${repo}/contents/${item.path}?ref=${branch}`)).content, 'base64').toString('utf8'));
+      delete project.slug;
+      return { ...project, _fileId: item.name.replace(/\.json$/, '') };
+    }));
     const refData = await gh(current.access_token, `/repos/${owner}/${repo}/git/ref/heads/${branch}`);
     const tree = await gh(current.access_token, `/repos/${owner}/${repo}/git/trees/${refData.object.sha}?recursive=1`);
     const mediaPaths = (tree.tree || []).filter(item => item.type === 'blob' && /^public\/(assets|uploads)\/.+\.(png|jpe?g|webp|gif|svg|avif)$/i.test(item.path)).map(item => item.path);

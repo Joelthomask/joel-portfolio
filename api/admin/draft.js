@@ -25,14 +25,14 @@ export default async function handler(req, res) {
       const safe = String(item.name || 'image').toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(-90) || `image.${imageTypes[item.type]}`;
       const filename = `${Date.now()}-${crypto.randomBytes(4).toString('hex')}-${safe}`;
       const replacePath = typeof item.replacePath === 'string' && /^public\/(assets|uploads)\/[a-zA-Z0-9._-]+$/.test(item.replacePath) ? item.replacePath : null;
-      return { path: replacePath || `public/uploads/${filename}`, filename: replacePath ? replacePath.split('/').pop() : filename, bytes, isPortrait: item.isPortrait === true, projectSlug: item.projectImage === true ? String(item.projectSlug || '') : '', imageOrder: Number.isInteger(item.imageOrder) ? item.imageOrder : -1 };
+      return { path: replacePath || `public/uploads/${filename}`, filename: replacePath ? replacePath.split('/').pop() : filename, bytes, isPortrait: item.isPortrait === true, projectFileId: item.projectImage === true ? String(item.projectFileId || '') : '', imageOrder: Number.isInteger(item.imageOrder) ? item.imageOrder : -1 };
     });
     if (uploadBytes > 2.8 * 1024 * 1024) throw new Error('Combined image uploads must be 2.8 MB or smaller per Save draft.');
 
     for (const upload of stagedUploads) if (upload.isPortrait && files['src/content/about.json']) files['src/content/about.json'].portrait = '/' + upload.path.replace(/^public\//, '');
     for (const upload of stagedUploads) {
-      if (!upload.projectSlug || upload.imageOrder < 0) continue;
-      const projectPath = `src/content/projects/${upload.projectSlug}.json`;
+      if (!upload.projectFileId || !/^[a-zA-Z0-9-]+$/.test(upload.projectFileId) || upload.imageOrder < 0) continue;
+      const projectPath = `src/content/projects/${upload.projectFileId}.json`;
       const project = files[projectPath];
       if (!project || typeof project !== 'object') continue;
       if (!Array.isArray(project.images)) project.images = project.image ? [project.image] : [];
@@ -46,8 +46,12 @@ export default async function handler(req, res) {
     const parent = await gh(current.access_token, `/repos/${owner}/${repo}/git/commits/${ref.object.sha}`);
     const tree = [];
 
+    const projectPaths = paths.filter(path => path.startsWith('src/content/projects/'));
+    const projectIds = projectPaths.map(path => path.slice('src/content/projects/'.length).replace(/\.json$/, ''));
+    if (new Set(projectIds).size !== projectIds.length) throw new Error('Duplicate internal project file IDs detected.');
     for (const [path, value] of Object.entries(files)) {
       if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`Invalid JSON content for ${path}.`);
+      if (path.startsWith('src/content/projects/')) delete value.slug;
       if (path.startsWith('src/content/projects/')) {
         for (const key of ['liveDemoUrl', 'sourceCodeUrl']) {
           const url = value[key];

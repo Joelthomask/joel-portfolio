@@ -19,20 +19,19 @@ export type Project = {
   sourceCodeUrl?: string
   date?: string
   role?: string
-  slug: string
+  id: string
   projectType: 'Web Apps' | 'AI / ML' | 'Desktop Apps' | 'Databases' | 'Others'
 }
 
 const projectFiles = import.meta.glob('../content/projects/*.json', {
   eager: true,
   import: 'default',
-}) as Record<string, Omit<Project, 'slug'>>
+}) as Record<string, Omit<Project, 'id'>>
 
 export const projects: Project[] = Object.entries(projectFiles)
   .map(([filePath, project]) => ({
     ...project,
-    // Use the CMS-generated JSON filename as a stable ID; no CMS slug field required.
-    slug: filePath.split('/').pop()?.replace(/\.json$/, '') ?? project.title,
+    id: filePath.split('/').pop()?.replace(/\.json$/, '') ?? project.title,
   }))
   .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999))
 
