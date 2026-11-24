@@ -1,6 +1,5 @@
 {
   "title": "RetinaFace-Mask-Classifier",
-  "slug": "ML",
   "category": "COMPUTER VISION",
   "projectType": "AI / ML",
   "description": "This repository contains a training and inference pipeline built around **RetinaFace**   trained from scratch on curated datasets .",
