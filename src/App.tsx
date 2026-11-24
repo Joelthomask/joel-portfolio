@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Menu, X, ArrowUpRight, Github, Linkedin, Mail, Search, LayoutGrid, List, Globe, Cpu, Monitor, Database, MoreHorizontal, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, CalendarDays, Layers, UserRound, Check } from 'lucide-react'
 import { projects, technologies, siteContent, aboutContent, contactContent } from './data/portfolio'
 import SectionLabel from './components/SectionLabel'
@@ -172,40 +172,6 @@ function MobileExperienceNotice() {
 }
 
 
-
-function ProjectScrollArea({ children, className = '', label }: { children: ReactNode; className?: string; label: string }) {
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const [canScrollDown, setCanScrollDown] = useState(false)
-  const [canScrollUp, setCanScrollUp] = useState(false)
-
-  const updateScrollState = () => {
-    const element = viewportRef.current
-    if (!element) return
-    setCanScrollDown(element.scrollTop + element.clientHeight < element.scrollHeight - 2)
-    setCanScrollUp(element.scrollTop > 2)
-  }
-
-  useLayoutEffect(() => {
-    const element = viewportRef.current
-    if (!element) return
-    updateScrollState()
-    const observer = new ResizeObserver(updateScrollState)
-    observer.observe(element)
-    if (element.firstElementChild) observer.observe(element.firstElementChild)
-    return () => observer.disconnect()
-  }, [children])
-
-  return (
-    <div className={`project-scroll-area ${className}`}>
-      <div ref={viewportRef} className="project-scroll-viewport" onScroll={updateScrollState} aria-label={label} tabIndex={0}>
-        {children}
-      </div>
-      {canScrollDown && <button className="project-scroll-cue down" type="button" aria-label={`Scroll ${label} down`} onClick={() => viewportRef.current?.scrollBy({ top: 110, behavior: 'smooth' })}><ChevronDown size={16} /></button>}
-      {canScrollUp && <button className="project-scroll-cue up" type="button" aria-label={`Scroll ${label} up`} onClick={() => viewportRef.current?.scrollBy({ top: -110, behavior: 'smooth' })}><ChevronDown size={16} /></button>}
-    </div>
-  )
-}
-
 function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[number]; onClose: () => void }) {
   const gallery = (project.images?.length ? project.images : project.image ? [project.image] : []).filter(Boolean)
   const [activeImage, setActiveImage] = useState(0)
@@ -249,16 +215,24 @@ function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[n
         </div>
         <div className="project-modal-content">
           <div className="project-modal-kicker"><span className="project-modal-kicker-icon"><Layers size={14} /></span>{project.projectType || 'PROJECT'}</div>
-          <p className="project-modal-category">{project.category}</p>
           <h2 id="project-modal-title">{project.title}</h2>
-          <ProjectScrollArea className="project-description-scroll" label="project description"><p className="project-modal-description">{project.overview || project.description}</p></ProjectScrollArea>
-          {features.length > 0 && <div className="project-modal-features">
-            <h3><span><Check size={15} /></span> Key Features</h3>
-            <ProjectScrollArea className="project-features-scroll" label="key features"><ul>{features.map((feature, index) => <li key={`${feature}-${index}`}><Check size={15} />{feature}</li>)}</ul></ProjectScrollArea>
-          </div>}
-          <div className="project-modal-tech">
-            <h3>Technology Stack</h3>
-            <ProjectScrollArea className="project-tech-scroll" label="technology stack"><div className="project-modal-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></ProjectScrollArea>
+          {project.category && <p className="project-modal-category">{project.category}</p>}
+          <ProjectScrollArea className="project-description-scroll" label="project description">
+            <p className="project-modal-description">{project.overview || project.description}</p>
+          </ProjectScrollArea>
+          <div className="project-modal-detail-grid">
+            {features.length > 0 && <div className="project-modal-features">
+              <h3><span><Check size={15} /></span> Key Features</h3>
+              <ProjectScrollArea className="project-features-scroll" label="key features">
+                <ul>{features.map((feature, index) => <li key={`${feature}-${index}`}><Check size={15} />{feature}</li>)}</ul>
+              </ProjectScrollArea>
+            </div>}
+            <div className="project-modal-tech">
+              <h3><span className="project-modal-tech-icon"><Layers size={15} /></span> Tech Stack</h3>
+              <ProjectScrollArea className="project-tech-scroll" label="technology stack">
+                <div className="project-modal-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              </ProjectScrollArea>
+            </div>
           </div>
           <div className="project-modal-actions">
             {hasLiveDemo && <a className="button button-primary" href={project.liveDemoUrl} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Live Demo <ArrowUpRight size={14} /></a>}
