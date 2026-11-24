@@ -1777,3 +1777,164 @@ main { overflow-x: clip; } /* tiles sliding in from the right must not create a 
   .project-modal-actions { gap: 7px; }
   .project-modal-actions .button { flex: 1 1 100%; justify-content: center; padding: 9px; }
 }
+
+
+/* Final visual polish — glass transparency, typography and quiet scroll cues */
+.project-modal-backdrop {
+  background: rgba(2, 6, 12, .56);
+  backdrop-filter: blur(10px) saturate(112%);
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
+}
+.project-modal {
+  border: 1px solid rgba(174, 201, 232, .19);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 96% 2%, rgba(0, 190, 255, .075), transparent 39%),
+    linear-gradient(135deg, rgba(12, 21, 33, .91), rgba(4, 9, 16, .91));
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, .48),
+    inset 0 1px 0 rgba(255,255,255,.055);
+}
+.project-modal-content {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: 0;
+}
+.project-modal-kicker {
+  padding: 7px 12px;
+  border-color: rgba(0, 213, 255, .18);
+  background: rgba(0, 190, 220, .075);
+  font: 500 12px/1.2 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: .01em;
+}
+.project-modal-content > h2 {
+  margin-top: 18px;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-weight: 650;
+  letter-spacing: -.045em;
+  line-height: 1.02;
+}
+.project-modal-category {
+  margin-top: 10px;
+  color: #c1cbd8;
+  font: 500 15px/1.4 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: .005em;
+}
+.project-description-scroll {
+  flex-basis: 108px;
+  height: 108px;
+  margin-top: 16px;
+}
+.project-modal-description {
+  padding: 1px 42px 14px 0;
+  color: rgba(215, 224, 236, .82);
+  font: 400 14px/1.65 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -.008em;
+}
+.project-modal-detail-grid {
+  margin-top: 20px;
+  gap: 26px;
+}
+.project-modal-features h3,
+.project-modal-tech h3 {
+  margin-bottom: 14px;
+  color: #f0f5fb;
+  font: 600 14px/1.3 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -.015em;
+}
+.project-modal-features li {
+  gap: 10px;
+  color: rgba(219, 228, 239, .84);
+  font: 400 13px/1.5 Inter, "Segoe UI", Arial, sans-serif;
+}
+.project-modal-features li svg {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+}
+.project-modal-tech {
+  padding-left: 25px;
+  border-left-color: rgba(166, 190, 220, .16);
+}
+.project-modal-tags { gap: 8px; padding-right: 26px; }
+.project-modal-tags span {
+  padding: 7px 11px;
+  border-color: rgba(165, 190, 220, .15);
+  border-radius: 999px;
+  background: rgba(135, 165, 205, .075);
+  color: rgba(224, 233, 244, .88);
+  font: 500 11px/1.25 Inter, "Segoe UI", Arial, sans-serif;
+}
+.project-modal-actions {
+  margin-top: 19px;
+  gap: 11px;
+}
+.project-modal-actions .button {
+  min-height: 46px;
+  border-radius: 11px;
+  font: 550 13px/1 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -.005em;
+}
+.project-modal-meta {
+  margin-top: 19px;
+  padding-top: 15px;
+  border-top-color: rgba(165, 190, 220, .12);
+}
+.project-modal-meta span {
+  color: rgba(183, 198, 216, .75);
+  font: 400 11px/1.3 Inter, "Segoe UI", Arial, sans-serif;
+}
+.project-modal-close {
+  border-color: rgba(180, 200, 230, .15);
+  background: rgba(8, 14, 23, .48);
+  backdrop-filter: blur(8px);
+}
+.project-modal-close:hover {
+  border-color: rgba(0, 213, 255, .32);
+  color: #eafaff;
+  background: rgba(0, 160, 190, .10);
+}
+.project-scroll-cue {
+  right: 2px;
+  bottom: 1px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  color: rgba(0, 220, 255, .9);
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  transition: color .18s ease, transform .18s ease, opacity .18s ease;
+}
+.project-scroll-cue:hover {
+  color: #f1fbff;
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(2px);
+}
+.project-scroll-cue.up:hover { transform: translateY(-2px); }
+.project-scroll-cue:focus-visible {
+  outline: 1px solid rgba(0, 213, 255, .45);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.project-scroll-cue svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2.1;
+  filter: none;
+}
+.project-scroll-cue.up svg { transform: rotate(180deg); }
+.project-scroll-cue.up:hover svg { transform: rotate(180deg); }
+@media (max-width: 900px) {
+  .project-modal-backdrop {
+    background: rgba(2, 6, 12, .62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .project-modal { background: linear-gradient(145deg, rgba(12,21,33,.96), rgba(4,9,16,.96)); }
+  .project-modal-description { font-size: 12px; line-height: 1.55; }
+  .project-modal-features li { font-size: 11px; }
+}
