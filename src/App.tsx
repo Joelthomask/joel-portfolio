@@ -270,7 +270,6 @@ function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[n
           {gallery.length > 0 && <div className="project-gallery-count">{String(activeImage + 1).padStart(2, '0')} <span>/</span> {String(gallery.length).padStart(2, '0')}</div>}
         </div>
         <div className="project-modal-content">
-          <div className="project-modal-kicker"><span className="project-modal-kicker-icon"><Layers size={14} /></span>{project.projectType || 'PROJECT'}</div>
           <h2 id="project-modal-title">{project.title}</h2>
           {project.category && <p className="project-modal-category">{project.category}</p>}
           <ProjectScrollArea className="project-description-scroll" label="project description">
@@ -278,7 +277,7 @@ function ProjectDetailModal({ project, onClose }: { project: (typeof projects)[n
           </ProjectScrollArea>
           <div className="project-modal-detail-grid">
             {features.length > 0 && <div className="project-modal-features">
-              <h3><span><Check size={15} /></span> Key Features</h3>
+              <h3>Key Features</h3>
               <ProjectScrollArea className="project-features-scroll" label="key features">
                 <ul>{features.map((feature, index) => <li key={`${feature}-${index}`}><Check size={15} />{feature}</li>)}</ul>
               </ProjectScrollArea>

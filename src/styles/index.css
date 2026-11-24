@@ -1938,3 +1938,9 @@ main { overflow-x: clip; } /* tiles sliding in from the right must not create a 
   .project-modal-description { font-size: 12px; line-height: 1.55; }
   .project-modal-features li { font-size: 11px; }
 }
+
+/* Small final hierarchy adjustment: title leads the content panel */
+.project-modal-content > h2 { margin-top: 0; }
+.project-modal-content > .project-modal-category { margin-top: 9px; }
+/* Key Features heading is text-only; feature rows retain their checkmarks. */
+.project-modal-features h3 span { display: none; }
