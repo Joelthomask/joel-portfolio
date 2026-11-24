@@ -1,23 +1,17 @@
 {
-  "title": "Database Labgcycycucg",
-  "slug": "database-lab",
+  "title": "Database Lab",
   "category": "DATABASE EXPERIMENTS",
-  "projectType": "Databases",
   "description": "A collection of database exercises and application experiments.",
-  "overview": "",
   "tags": [
     "SQL",
     "MySQL",
     "Backend"
   ],
-  "features": [],
-  "liveDemoUrl": "",
-  "sourceCodeUrl": "",
-  "date": "",
-  "role": "",
-  "sortOrder": 3,
   "featured": true,
+  "sortOrder": 3,
+  "slug": "database-lab",
+  "projectType": "Databases",
   "showLiveDemo": false,
-  "images": [],
-  "image": ""
+  "liveDemoUrl": "",
+  "sourceCodeUrl": ""
 }
