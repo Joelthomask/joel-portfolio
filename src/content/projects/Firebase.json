@@ -1,0 +1,41 @@
+{
+  "title": "RoadAssist",
+  "slug": "Firebase",
+  "category": "Mobile APP",
+  "projectType": "Others",
+  "description": "RoadAssist is a real-time road assistance app using Firebase and Google Maps APIs.",
+  "overview": "RoadAssist is a roadside assistance platform designed to help drivers facing vehicle breakdowns or emergencies.",
+  "tags": [
+    "Flutter",
+    "Dart",
+    "Firebase",
+    "Google Maps API."
+  ],
+  "features": [
+    "Emergency roadside assistance",
+    "Live GPS location tracking",
+    "Nearby mechanic and service discovery",
+    "Flat tyre assistance",
+    "Battery jump-start support",
+    "Fuel delivery",
+    "Towing services",
+    "Real-time service requests",
+    "Service provider tracking",
+    "Emergency contact support"
+  ],
+  "liveDemoUrl": "",
+  "sourceCodeUrl": "https://github.com/Joelthomask/RoadAssist",
+  "date": "2025",
+  "role": "Developer",
+  "sortOrder": 3,
+  "featured": true,
+  "showLiveDemo": false,
+  "images": [
+    "/uploads/1795521070460-45c6c016-picture3.webp",
+    "/uploads/1795521070460-56404d92-picture4.webp",
+    "/uploads/1795521070460-472c8016-picture5.webp",
+    "/uploads/1795521070460-afacc7e0-picture2.webp",
+    "/uploads/1795521070460-c5e44fb1-picture1.webp"
+  ],
+  "image": "/uploads/1795521070460-45c6c016-picture3.webp"
+}
