@@ -1667,3 +1667,135 @@ main { overflow-x: clip; } /* tiles sliding in from the right must not create a 
 .project-image-lightbox { position:fixed; inset:0; z-index:10050; display:grid; place-items:center; padding:4vh 4vw; background:rgba(0,0,0,.94); cursor:zoom-out; }
 .project-image-lightbox > img { display:block; width:auto; height:auto; max-width:92vw; max-height:92vh; object-fit:contain; }
 .project-image-lightbox-close { position:absolute; top:22px; right:24px; width:44px; height:44px; display:grid; place-items:center; color:#fff; background:rgba(20,28,40,.9); border:1px solid rgba(255,255,255,.22); border-radius:50%; cursor:pointer; }
+
+
+/* Project detail modal: fixed card with independently scrollable content panels */
+.project-modal {
+  height: min(850px, calc(100svh - 60px));
+  max-height: min(850px, calc(100svh - 60px));
+  overflow: hidden;
+  align-items: stretch;
+}
+.project-modal-gallery {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.project-modal-content {
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 12px 5px 4px 0;
+}
+.project-modal-content > h2,
+.project-modal-content > .project-modal-kicker,
+.project-modal-content > .project-modal-category,
+.project-modal-content > .project-modal-actions,
+.project-modal-content > .project-modal-meta,
+.project-modal-content > .project-modal-features > h3,
+.project-modal-content > .project-modal-tech > h3 {
+  flex: 0 0 auto;
+}
+.project-scroll-area {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  mask-image: none;
+}
+.project-scroll-viewport {
+  max-height: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  outline: none;
+}
+.project-scroll-viewport::-webkit-scrollbar { display: none; }
+.project-scroll-viewport:focus-visible { outline: 1px solid rgba(0,213,255,.35); outline-offset: -2px; border-radius: 8px; }
+.project-scroll-cue {
+  position: absolute;
+  z-index: 2;
+  right: 5px;
+  bottom: 3px;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,213,255,.3);
+  border-radius: 50%;
+  color: #eafaff;
+  background: rgba(5,15,25,.88);
+  box-shadow: 0 0 18px rgba(0,213,255,.13);
+  cursor: pointer;
+}
+.project-scroll-cue.up { top: 3px; bottom: auto; }
+.project-scroll-cue.up svg { transform: rotate(180deg); }
+.project-description-scroll { flex: 0 1 auto; max-height: 112px; margin-top: 7px; }
+.project-modal-description { margin: 0; padding: 4px 22px 12px 0; }
+.project-modal-features {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 18px;
+}
+.project-features-scroll { max-height: 158px; }
+.project-modal-features ul { padding: 2px 22px 12px 0; }
+.project-modal-tech {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 16px;
+}
+.project-tech-scroll { max-height: 100px; }
+.project-modal-tags { padding: 2px 22px 12px 0; }
+.project-modal-actions { margin-top: auto; padding-top: 16px; }
+.project-modal-meta { margin-top: 15px; padding-top: 13px; }
+@media (max-width: 850px) {
+  .project-modal {
+    height: calc(100svh - 32px);
+    max-height: calc(100svh - 32px);
+    overflow: hidden;
+    grid-template-rows: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 14px;
+  }
+  .project-modal-gallery {
+    min-height: 0;
+    padding-top: 26px;
+    justify-content: flex-start;
+  }
+  .project-modal-main-image { min-height: 0; flex: 1 1 auto; aspect-ratio: auto; }
+  .project-modal-thumbnails { flex: 0 0 auto; }
+  .project-modal-content { min-height: 0; overflow: hidden; }
+  .project-description-scroll { max-height: 76px; }
+  .project-features-scroll { max-height: 105px; }
+  .project-tech-scroll { max-height: 72px; }
+  .project-modal-features { margin-top: 10px; }
+  .project-modal-tech { margin-top: 10px; }
+  .project-modal-actions { margin-top: 10px; padding-top: 0; }
+  .project-modal-meta { margin-top: 9px; padding-top: 9px; }
+}
+@media (max-width: 480px) {
+  .project-modal {
+    height: calc(100svh - 16px);
+    max-height: calc(100svh - 16px);
+    grid-template-rows: minmax(0, .78fr) minmax(0, 1.22fr);
+  }
+  .project-modal-gallery { padding-top: 29px; }
+  .project-modal-content h2 { font-size: 30px; }
+  .project-modal-actions { display: flex; }
+  .project-modal-actions .button { flex: 1 1 auto; padding: 9px 10px; font-size: 10px; }
+}
+
+.project-description-scroll { height: 112px; }
+.project-features-scroll { height: 158px; }
+.project-tech-scroll { height: 100px; }
+@media (max-width: 850px) {
+  .project-description-scroll { height: 76px; }
+  .project-features-scroll { height: 105px; }
+  .project-tech-scroll { height: 72px; }
+}
